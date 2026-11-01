@@ -5,6 +5,7 @@
 #include <time.h>
 
 #define MAT_SIZE 512
+#define BEST_OF_N 8
 
 int main(void) 
 {
@@ -32,12 +33,19 @@ int main(void)
     mat_fun(a, rng_norm);
     mat_fun(b, rng_f);
 
-    uint64_t start_ns = clock_gettime_nsec_np(CLOCK_MONOTONIC);
-    mat_mul(c, a, b);
-    uint64_t dur_ns = clock_gettime_nsec_np(CLOCK_MONOTONIC) - start_ns;
-    double dur_s = dur_ns / 1e9;
+    uint64_t fastest_ns = UINT64_MAX;
+    for (size_t i = 0; i < BEST_OF_N; ++i) {
+        uint64_t start_ns = clock_gettime_nsec_np(CLOCK_MONOTONIC);
+        mat_mul(c, a, b);
+        uint64_t dur_ns = clock_gettime_nsec_np(CLOCK_MONOTONIC) - start_ns;
+        if (dur_ns < fastest_ns) {
+            fastest_ns = dur_ns;
+        }
+    }
 
-    printf("mat_mul time: %f s\n", dur_s);
+    double fastest_s = fastest_ns / 1e9;
+
+    printf("mat_mul time: %.3f s\n", fastest_s);
 
     free(mat_data);
 

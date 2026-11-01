@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -O3
 LDFLAGS =
 LDLIBS =
 
@@ -31,7 +31,7 @@ run: $(EXE)
 	@$(EXE)
 
 hot:
-	@find $(SRC) -type f | entr -c make run
+	@find $(SRC) -type f | entr -c make run -B
 
 clean:
 	@rm -rf $(BIN) $(OBJ)
