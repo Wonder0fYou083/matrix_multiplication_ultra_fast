@@ -14,7 +14,7 @@ void mat_mul(Mat c, Mat a, Mat b) {
     for (size_t i = 0; i < c.rows; ++i) {
         for (size_t k = 0; k < a.cols; ++k) {
             for (size_t j = 0; j < c.cols; ++j) {
-                c.data[i * c.cols + k] += a.data[i * a.cols + k] * b.data[k * b.cols + j];
+                c.data[i * c.cols + j] += a.data[i * a.cols + k] * b.data[k * b.cols + j];
             }
         }
     }
